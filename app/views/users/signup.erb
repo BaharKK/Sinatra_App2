@@ -1,0 +1,36 @@
+<% if @user && @user.errors.any? %>
+  <div>
+    <strong>Some issue with your song, please fix them:</strong>
+    <ul>
+      <% @user.errors.full_messages.each do |user| %>
+      <li><%= user %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+<div class="container" >
+  <form action="/signup" method="post" class="form-signin">
+    <div>
+      <h2 class="form-signin-heading">Please Enter Your Details to Sign Up</h2>
+    </div>
+    <div>
+      <label>Name:</label>
+      <input type="text" class="form-control" name="name">
+    </div>
+    <div>
+      <label>Username:</label>
+      <input type="text" class="form-control" name="username">
+    </div>
+    <div>
+      <label>Email:</label>
+      <input type="text" class="form-control" name="email">
+    </div>
+    <div>
+      <label>Password:</label>
+      <input type="password" class="form-control" name="password">
+    </div>
+    <div>
+      <input type="submit" value="Sign Up">
+    </div>
+  </form>
+</div><!-- /container -->

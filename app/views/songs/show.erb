@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="jumbotron"> 
+    <h3> Title: <%= @song.title %></h3>
+    <p>Author: <%= @song.author %></p>
+    <p>
+      <a href="/songs/show_others/<%= @song.author %>">Other Songs from this Author</a>
+    </p>
+    <% unless @song.url.nil? %>
+    <p>
+      URL: <a href="/song/<%= @song.url %>"><%= @song.url %></a>
+    </p>
+    <% end %>
+    <p>
+     <%= @song.created_at %>
+    </p>
+  </div>
+</div>
+<div class="container">
+  <% if current_user %>
+    <% if !current_user.has_reviewed?(@song) %>
+      <form id="review_form" class="review_form" action="/review" method="post"> 
+        <input type="hidden" name="song_id" value="<%= @song.id %>"></input>
+        <textarea cols="45" rows="5" name="content"></textarea>
+        <button type="submit" class="btn btn-success" name="review">Submit Review</button>
+      </form>
+    <% end %>
+  <%else%>
+    <p> Sign In Or Sign Up for A New Account to Review This Song </p>
+  <% end %> 
+  <hr/>
+  <h1> Reviews </h1>
+  <% @song.reviews.each do |review| %>
+  <div class="review">
+    <p><%= review.content %></p>
+  </div>
+  <% end %>
+  <a href="/songs">Back to All Songs</a>
+</div>

@@ -1,0 +1,66 @@
+<div class="navbar-wrapper">
+  <div class="container">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+        <a class="navbar-brand" href="/">Music Wall</a>
+        </div>
+        <div id="navbar">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/songs">Home</a></li>
+            <li><a href="/songs/new">Add Song</a></li>
+            <% unless current_user %>
+              <li><a href="/signup">Sign Up</a></li>
+            <% end %>
+          </ul>
+      <% if current_user %>
+            <form class="navbar-form navbar-right"  action="/logout" method="post">
+            <button type="submit" class="btn btn-success">Sign Out</button>
+            </form>
+      <% else %>
+            <form class="navbar-form navbar-right"  action="/signin" method="post">
+              <div class="form-group">
+                <input name="username" type="text" placeholder="Username" class="form-control">
+              </div>
+              <div class="form-group">
+                <input  name="password" type="password" placeholder="Password" class="form-control">
+              </div>
+              <button type="submit" class="btn btn-success">Sign in</button>
+            </form>
+            <% end %>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <% if current_user %>
+  <div class="jumbotron">
+    <h2>Welcome <%= current_user.name %></h2>
+  </div>
+<% end %>
+
+<div class="container" style="margin-top: 100px;"> 
+  <div class="row">
+    <div class="col-md-4">
+      <% @songs.each do |song| %>
+        <div class="song">
+          <h2>
+          <%= song.title %>
+          </h2>
+          <p><h5><a href="/songs/<%= song.id %>">by: <%= song.author %></h5></a></p>
+            <a class="btn btn-default" href="<%= song.url %>" role="button">View Song's URL</a>
+            <% if current_user && !current_user.has_upvoted?(song) %>
+            <form class="upvote" action="/vote" method="post">
+            <input type="hidden" name="song_id" value="<%= song.id %>">
+            <button class="btn btn-default">Vote</button></form>
+            <% end %>
+            <a class="btn btn-default"><%= song.votes.count %> Likes </a>
+          </p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
