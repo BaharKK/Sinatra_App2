@@ -21,6 +21,14 @@
       <form id="review_form" class="review_form" action="/review" method="post"> 
         <input type="hidden" name="song_id" value="<%= @song.id %>"></input>
         <textarea cols="45" rows="5" name="content"></textarea>
+        
+        <div class="stars">
+          <% (1..5).reverse_each do |num|%>
+            <input class="star star-<%= num %>" id="star-<%= num %>" type="radio" name="star" value="<%= num%>"/>
+            <label class="star star-<%= num %>" for="star-<%= num %>" class="color-<%=%>">
+            </label>
+          <% end %>
+        </div>
         <button type="submit" class="btn btn-success" name="review">Submit Review</button>
       </form>
     <% end %>
@@ -29,10 +37,18 @@
   <% end %> 
   <hr/>
   <h1> Reviews </h1>
-  <% @song.reviews.each do |review| %>
   <div class="review">
+    <% @song.reviews.each do |review| %>
     <p><%= review.content %></p>
+    <p><%= review.rating %></p>
+      <% if review.user_id == current_user.id %> 
+        <form action="/reviews/delete" method="post"> 
+          <input type="hidden" name="review_id" value="<%= review.id %>"></input>
+          <input type="hidden" name="song_id" value="<%= @song.id %>"></input>
+          <button type="submit" class="btn btn-success" name="review_delete">Delete Review</button>
+        </form>
+      <% end %> 
+    <% end %>
   </div>
-  <% end %>
   <a href="/songs">Back to All Songs</a>
 </div>
